@@ -1,3 +1,27 @@
 .fileInput {
-    height: 500px;
+    height: 16rem;
+    width: 28rem;
+    max-width: 100%;
+    text-align: center;
+    position: relative;
+    border-width: 2px;
+    border-radius: 1rem;
+    border-style: dashed;
+    border-color: #002984;
+    background-color: #3f51b5;
+    font-weight: 500;
+    color: #ffffff;
+    box-sizing: border-box;
+
+    &_active {
+        background-color: #4adb97;
+    }
+}
+
+.inputLabel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
