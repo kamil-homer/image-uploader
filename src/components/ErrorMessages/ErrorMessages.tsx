@@ -4,7 +4,7 @@ interface ErrorMessagesProps {
   messages: string[];
 }
 
-function ErrorMessage({ messages }: ErrorMessagesProps) {
+function ErrorMessages({ messages }: ErrorMessagesProps) {
   if (messages.length === 0) return null;
 
   const errorMessages = messages.map((message) => (
@@ -13,4 +13,4 @@ function ErrorMessage({ messages }: ErrorMessagesProps) {
   return <div className={styles.errorBox}>{errorMessages}</div>;
 }
 
-export default ErrorMessage;
+export default ErrorMessages;

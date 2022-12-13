@@ -12,7 +12,7 @@ import { Grid } from "@mui/material";
 import { uploadToFirebaseStorage } from "../../firestore/firebaseService";
 import { nanoid } from "nanoid";
 import { getDownloadURL } from "firebase/storage";
-import ErrorMessage from "../ErrorMessage/ErrorMessages";
+import ErrorMessages from "../ErrorMessages/ErrorMessages";
 
 interface FileInputProps {
   setDownloadURL: (url: string) => void;
@@ -87,7 +87,7 @@ function FileInput({ setDownloadURL, setIsLoading }: FileInputProps) {
         </div>
       </Grid>
       <Grid container item xs={12} justifyContent="center" alignItems="center">
-        <ErrorMessage messages={errorsList} />
+        <ErrorMessages messages={errorsList} />
       </Grid>
     </Grid>
   );
