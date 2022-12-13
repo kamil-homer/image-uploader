@@ -2,6 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import FileInput from "../../components/FileInput/FileInput";
+import { FileWithPreview } from "../../types/common";
 
 function Home() {
   const [files, setFiles] = useState([]);
@@ -15,6 +16,11 @@ function Home() {
       </Grid>
       <Grid container item xs={12} justifyContent="center" alignItems="center">
         <FileInput setFiles={setFiles} />
+      </Grid>
+      <Grid container item xs={12} justifyContent="center" alignItems="center">
+        {files.map((file: FileWithPreview) => (
+          <img src={file.preview} alt={file.name} />
+        ))}
       </Grid>
       <Grid container item xs={12} justifyContent="center" alignItems="center">
         <Box>Gallery</Box>
