@@ -16,3 +16,7 @@ export const prepareErrorList = (
 
     return errors;
   }, initialArray);
+
+//   unsigned right shift for handling hidden files e.g .gitIgnore
+export const getFileExtension = (filename: string) =>
+  filename.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 2);

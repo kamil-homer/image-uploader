@@ -2,20 +2,29 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import styles from "./FileInput.module.scss";
 import classNames from "classnames";
-import { getFileUrl, prepareErrorList } from "../../utils/helpers";
+import {
+  getFileExtension,
+  getFileUrl,
+  prepareErrorList,
+} from "../../utils/helpers";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { Grid } from "@mui/material";
+import { uploadToFirebaseStorage } from "../../firestore/firebaseService";
+import { nanoid } from "nanoid";
+import { getDownloadURL } from "firebase/storage";
+import ErrorMessage from "../ErrorMessage/ErrorMessages";
+
 interface FileInputProps {
-  setFiles: (file: any) => void;
+  setDownloadURL: (url: string) => void;
+  setIsLoading: (isLoading: boolean) => void;
 }
 
-function FileInput({ setFiles }: FileInputProps) {
-  const onDrop = useCallback(
-    (acceptedFiles: any) => {
-      setFiles(acceptedFiles.map((file: any) => getFileUrl(file)));
-    },
-    [setFiles]
-  );
+function FileInput({ setDownloadURL, setIsLoading }: FileInputProps) {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const acceptedFile = getFileUrl(acceptedFiles[0]);
+    handleUploadImage(acceptedFile);
+  }, []);
+
   const { getRootProps, getInputProps, fileRejections, isDragActive } =
     useDropzone({
       onDrop,
@@ -26,24 +35,47 @@ function FileInput({ setFiles }: FileInputProps) {
       maxFiles: 1,
     });
 
+  const handleUploadImage = (file: File) => {
+    setIsLoading(true);
+    if (!file) return;
+
+    const filename = nanoid() + "." + getFileExtension(file.name);
+    const uploadTask = uploadToFirebaseStorage(file, filename);
+    if (uploadTask) {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        (error) => {
+          console.error(error);
+          setIsLoading(false);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            setDownloadURL(downloadURL);
+            setIsLoading(false);
+          });
+        }
+      );
+    }
+  };
+
   const fileInputClassName = classNames(styles.fileInput, {
     [styles.fileInput_active]: isDragActive,
   });
 
   const errorsList = prepareErrorList(fileRejections, []);
 
-  const renderErrorMessages = errorsList.map((error) => (
-    <div className={styles.errorMessage} key={error}>
-      {error}
-    </div>
-  ));
-
   const inputLabel = isDragActive ? (
-    <div className={styles.inputLabel}>Drop the files here ...</div>
+    <div className={styles.inputLabel}>Drop the file here ...</div>
   ) : (
     <div className={styles.inputLabel}>
       <CloudUploadIcon fontSize="large" />
-      <p>Drag 'n' drop some files here, or click to select files</p>
+      <p>Drag 'n' drop the file here, or click to select file</p>
     </div>
   );
   return (
@@ -55,7 +87,7 @@ function FileInput({ setFiles }: FileInputProps) {
         </div>
       </Grid>
       <Grid container item xs={12} justifyContent="center" alignItems="center">
-        {renderErrorMessages}
+        <ErrorMessage messages={errorsList} />
       </Grid>
     </Grid>
   );
