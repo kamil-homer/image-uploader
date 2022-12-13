@@ -1,26 +1,23 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import { getDownloadURL } from "firebase/storage";
 
 import FileInput from "../../components/FileInput/FileInput";
 import { FileWithPreview } from "../../types/common";
-import { nanoid } from "nanoid";
-import { getFileExtension } from "../../utils/helpers";
 import { logInAnonymously } from "../../firestore/firebaseService";
 import styles from "./Home.module.scss";
 function Home() {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
-  //   const [image, setImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [downloadURL, setDownloadURL] = useState("");
+
   console.log(files);
 
   useEffect(() => {
-    logInUser();
+    logUserIntoFirebase();
   }, []);
 
-  const logInUser = async () => await logInAnonymously();
+  const logUserIntoFirebase = async () => await logInAnonymously();
 
   return (
     <Grid container rowSpacing={2} className={styles.imageUploader}>

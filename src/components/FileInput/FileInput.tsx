@@ -7,12 +7,12 @@ import {
   getFileUrl,
   prepareErrorList,
 } from "../../utils/helpers";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { Grid } from "@mui/material";
 import { uploadToFirebaseStorage } from "../../firestore/firebaseService";
 import { nanoid } from "nanoid";
 import { getDownloadURL } from "firebase/storage";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
+import FileInputLabel from "../FileInputLabel/FileInputLabel";
 
 interface FileInputProps {
   setDownloadURL: (url: string) => void;
@@ -64,26 +64,18 @@ function FileInput({ setDownloadURL, setIsLoading }: FileInputProps) {
     }
   };
 
+  const errorsList = prepareErrorList(fileRejections, []);
+
   const fileInputClassName = classNames(styles.fileInput, {
     [styles.fileInput_active]: isDragActive,
   });
 
-  const errorsList = prepareErrorList(fileRejections, []);
-
-  const inputLabel = isDragActive ? (
-    <div className={styles.inputLabel}>Drop the file here ...</div>
-  ) : (
-    <div className={styles.inputLabel}>
-      <CloudUploadIcon fontSize="large" />
-      <p>Drag 'n' drop the file here, or click to select file</p>
-    </div>
-  );
   return (
     <Grid container>
       <Grid container item xs={12} justifyContent="center" alignItems="center">
         <div {...getRootProps()} className={fileInputClassName}>
           <input {...getInputProps()} />
-          {inputLabel}
+          <FileInputLabel isDragActive={isDragActive} />
         </div>
       </Grid>
       <Grid container item xs={12} justifyContent="center" alignItems="center">
