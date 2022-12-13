@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import styles from "./FileInput.module.scss";
 import classNames from "classnames";
-import { getFileUrl } from "../../utils/helpers";
+import { getFileUrl, prepareErrorList } from "../../utils/helpers";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { Grid } from "@mui/material";
 interface FileInputProps {
@@ -26,24 +26,16 @@ function FileInput({ setFiles }: FileInputProps) {
       maxFiles: 1,
     });
 
-  let errorsList: string[] = [];
-
-  errorsList = fileRejections.reduce((errors, fileRejection) => {
-    fileRejection.errors.forEach((error) => {
-      if (!errors.includes(error.message)) {
-        errors = [...errors, error.message];
-      }
-    });
-
-    return errors;
-  }, errorsList);
-
   const fileInputClassName = classNames(styles.fileInput, {
     [styles.fileInput_active]: isDragActive,
   });
 
+  const errorsList = prepareErrorList(fileRejections, []);
+
   const renderErrorMessages = errorsList.map((error) => (
-    <div key={error}>{error}</div>
+    <div className={styles.errorMessage} key={error}>
+      {error}
+    </div>
   ));
 
   const inputLabel = isDragActive ? (
