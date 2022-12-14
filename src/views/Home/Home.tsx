@@ -17,7 +17,14 @@ function Home() {
 
   return (
     <Grid container rowGap={2} className={styles.imageUploader}>
-      <Grid container item xs={12} justifyContent="center" alignItems="center">
+      <Grid
+        container
+        item
+        xs={12}
+        justifyContent="center"
+        alignItems="center"
+        textAlign="center"
+      >
         <Typography variant="h2" component="h2">
           Image uploader
         </Typography>
