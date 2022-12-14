@@ -6,12 +6,13 @@ import FileInput from "../../components/FileInput/FileInput";
 import { FileWithPreview } from "../../types/common";
 import { logInAnonymously } from "../../firestore/firebaseService";
 import styles from "./Home.module.scss";
+import ImagePreview from "../../components/ImagePreview/ImagePreview";
 function Home() {
-  const [files, setFiles] = useState<FileWithPreview[]>([]);
+  const [file, setFile] = useState<FileWithPreview | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [downloadURL, setDownloadURL] = useState("");
 
-  console.log(files);
+  console.log(downloadURL);
 
   useEffect(() => {
     logUserIntoFirebase();
@@ -30,15 +31,11 @@ function Home() {
         <FileInput
           setDownloadURL={setDownloadURL}
           setIsLoading={setIsLoading}
+          setFiles={setFile}
         />
       </Grid>
       <Grid container item xs={12} justifyContent="center" alignItems="center">
-        {files.map((file: FileWithPreview) => (
-          <img key={file.name} src={file.preview} alt={file.name} />
-        ))}
-      </Grid>
-      <Grid container item xs={12} justifyContent="center" alignItems="center">
-        <Box>Gallery</Box>
+        <ImagePreview file={file} downloadLink={downloadURL} />
       </Grid>
     </Grid>
   );

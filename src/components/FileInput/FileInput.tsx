@@ -13,15 +13,19 @@ import { nanoid } from "nanoid";
 import { getDownloadURL } from "firebase/storage";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import FileInputLabel from "../FileInputLabel/FileInputLabel";
+import { FileWithPreview } from "../../types/common";
 
 interface FileInputProps {
   setDownloadURL: (url: string) => void;
   setIsLoading: (isLoading: boolean) => void;
+  setFiles: (file: FileWithPreview) => void;
 }
 
-function FileInput({ setDownloadURL, setIsLoading }: FileInputProps) {
+function FileInput({ setDownloadURL, setIsLoading, setFiles }: FileInputProps) {
   const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (!acceptedFiles.length) return null;
     const acceptedFile = getFileUrl(acceptedFiles[0]);
+    setFiles(acceptedFile);
     handleUploadImage(acceptedFile);
   }, []);
 
