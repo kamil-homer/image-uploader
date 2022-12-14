@@ -15,12 +15,10 @@
     font-weight: 700;
 }
 
-.downloadButton {
-    font-weight: 700;
-    background: rgb(8 126 164);
-    transition: background .25s;
+.downloadButtonWrapper .downloadButton {
+    background-color: rgb(8 126 164);
 
     &:hover {
-        background: rgb(5, 99, 130);
+        background-color: rgb(5, 99, 130);
     }
 }

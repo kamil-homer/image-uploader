@@ -65,6 +65,7 @@ function ImagePreview({ file }: ImagePreviewProps) {
           justifyContent="center"
           textAlign="center"
           alignItems="center"
+          className={styles.downloadButtonWrapper}
         >
           <Button
             variant="contained"
