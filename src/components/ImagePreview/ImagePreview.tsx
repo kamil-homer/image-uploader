@@ -1,13 +1,13 @@
-import { Button, Grid, IconButton } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useState } from "react";
 import { FileWithPreview } from "../../types/common";
 import { formatPixels } from "../../utils/helpers";
 import styles from "./ImagePreview.module.scss";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import { saveAs } from "file-saver";
 
 interface ImagePreviewProps {
   file: FileWithPreview | null;
-  downloadLink: string;
 }
 
 interface ImageSize {
@@ -15,7 +15,7 @@ interface ImageSize {
   width: number;
 }
 
-function ImagePreview({ file, downloadLink }: ImagePreviewProps) {
+function ImagePreview({ file }: ImagePreviewProps) {
   const [imageSize, setImageSize] = useState<ImageSize>({
     height: 0,
     width: 0,
@@ -38,38 +38,43 @@ function ImagePreview({ file, downloadLink }: ImagePreviewProps) {
         className={styles.details}
       >
         <Grid item xs={6} md={2} textAlign="center">
-          <p>name</p>
-          <p>{file.name}</p>
+          <p className={styles.property}>Name</p>
+          <p>{file.type}</p>
         </Grid>
         <Grid item xs={6} md={2} textAlign="center">
-          <p>type</p>
+          <p className={styles.property}>Type</p>
           {file.type}
         </Grid>
         <Grid item xs={6} md={2} textAlign="center">
-          <p>size</p>
+          <p className={styles.property}>Size (B)</p>
           {file.size}
         </Grid>
         <Grid item xs={6} md={2} textAlign="center">
-          <p>dimension (px)</p>
+          <p className={styles.property}>Dimension (px)</p>
           {`${imageSize.height} x ${imageSize.width}`}
         </Grid>
         <Grid item xs={6} md={2} textAlign="center">
-          <p>megapixles</p>
-
+          <p className={styles.property}>Megapixles</p>
           {`${formatPixels(imageSize.height * imageSize.width)}`}
         </Grid>
-        <Grid item xs={6} md={2} textAlign="center">
-          <a
-            href={downloadLink}
-            download={file.name}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.downloadLink}
+        <Grid
+          container
+          item
+          xs={6}
+          md={2}
+          justifyContent="center"
+          textAlign="center"
+          alignItems="center"
+        >
+          <Button
+            variant="contained"
+            startIcon={<CloudDownloadIcon />}
+            disabled={file === null}
+            onClick={() => saveAs(file, file.name)}
+            className={styles.downloadButton}
           >
-            <Button variant="contained" startIcon={<CloudDownloadIcon />}>
-              Download
-            </Button>
-          </a>
+            Download
+          </Button>
         </Grid>
       </Grid>
       <Grid item container>
@@ -79,6 +84,7 @@ function ImagePreview({ file, downloadLink }: ImagePreviewProps) {
           alt={file.name}
           className={styles.image}
           onLoad={handleImgSize}
+          data-testid="imagePreview"
         />
       </Grid>
     </Grid>

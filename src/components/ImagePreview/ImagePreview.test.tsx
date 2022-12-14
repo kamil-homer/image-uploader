@@ -10,7 +10,7 @@ describe("ImagePreview", () => {
   });
 
   it("Render image preview", () => {
-    render(<ImagePreview file={mockedFile} downloadLink="" />);
-    expect(screen.getByText("size")).toBeInTheDocument();
+    render(<ImagePreview file={mockedFile} />);
+    expect(screen.getByTestId("imagePreview")).toBeInTheDocument();
   });
 });

@@ -10,24 +10,24 @@ import {
 import { Grid } from "@mui/material";
 import { uploadToFirebaseStorage } from "../../firestore/firebaseService";
 import { nanoid } from "nanoid";
-import { getDownloadURL } from "firebase/storage";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import FileInputLabel from "../FileInputLabel/FileInputLabel";
 import { FileWithPreview } from "../../types/common";
 
 interface FileInputProps {
-  setDownloadURL: (url: string) => void;
-  setIsLoading: (isLoading: boolean) => void;
   setFiles: (file: FileWithPreview) => void;
 }
 
-function FileInput({ setDownloadURL, setIsLoading, setFiles }: FileInputProps) {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (!acceptedFiles.length) return null;
-    const acceptedFile = getFileUrl(acceptedFiles[0]);
-    setFiles(acceptedFile);
-    handleUploadImage(acceptedFile);
-  }, []);
+function FileInput({ setFiles }: FileInputProps) {
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (!acceptedFiles.length) return null;
+      const acceptedFile = getFileUrl(acceptedFiles[0]);
+      setFiles(acceptedFile);
+      handleUploadImage(acceptedFile);
+    },
+    [setFiles]
+  );
 
   const { getRootProps, getInputProps, fileRejections, isDragActive } =
     useDropzone({
@@ -40,7 +40,6 @@ function FileInput({ setDownloadURL, setIsLoading, setFiles }: FileInputProps) {
     });
 
   const handleUploadImage = (file: File) => {
-    setIsLoading(true);
     if (!file) return;
 
     const filename = nanoid() + "." + getFileExtension(file.name);
@@ -55,14 +54,6 @@ function FileInput({ setDownloadURL, setIsLoading, setFiles }: FileInputProps) {
         },
         (error) => {
           console.error(error);
-          setIsLoading(false);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log("File available at", downloadURL);
-            setDownloadURL(downloadURL);
-            setIsLoading(false);
-          });
         }
       );
     }

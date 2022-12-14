@@ -17,12 +17,12 @@ export const prepareErrorList = (
     return errors;
   }, initialArray);
 
-//   unsigned right shift for handling hidden files e.g .gitIgnore
+// unsigned right shift for handling hidden files e.g .gitIgnore
 export const getFileExtension = (filename: string) =>
   filename.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 2);
 
 export const generateFakeFileWithPreview = ({
-  name = "file.txt",
+  name = "fileWithPreview.txt",
   size = 1024,
   type = "plain/txt",
 }) => {
@@ -33,9 +33,6 @@ export const generateFakeFileWithPreview = ({
 export const formatPixels = (size: number) => {
   if (size >= 1000000) {
     return (size / 1000000).toFixed(1).replace(/\.0$/, "") + "MP";
-  }
-  if (size >= 1000) {
-    return (size / 1000).toFixed(1).replace(/\.0$/, "") + "K";
   }
   return size + "P";
 };
