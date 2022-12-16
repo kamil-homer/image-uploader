@@ -1,24 +1,24 @@
 .fileInput {
-    height: 16rem;
-    width: 28rem;
-    max-width: 100%;
-    text-align: center;
-    position: relative;
-    border-width: 2px;
-    border-radius: 1rem;
-    border-style: dashed;
-    border-color:  rgb(8 126 164);
-    background-color: rgb(52,58,79);
-    font-weight: 500;
-    color: #ffffff;
-    box-sizing: border-box;
-    transition: background-color .2s;
+  height: 16rem;
+  width: 28rem;
+  max-width: 100%;
+  text-align: center;
+  position: relative;
+  border-width: 2px;
+  border-radius: 1rem;
+  border-style: dashed;
+  border-color: rgb(8 126 164);
+  background-color: rgb(52, 58, 79);
+  font-weight: 500;
+  color: #ffffff;
+  box-sizing: border-box;
+  transition: background-color 0.2s;
 
-    &_active {
-        background-color: rgb(8 126 164);
-    }
+  &_active {
+    background-color: rgb(8 126 164);
+  }
 
-    &:hover {
-        background-color:  rgb(50, 69, 87);
-    }
-} 
+  &:hover {
+    background-color: rgb(50, 69, 87);
+  }
+}
