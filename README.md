@@ -8,3 +8,6 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 # How it works
 
 Image uploader allows you to upload a photo to Firebase server. It shows the image's preview and all the details (name, size, MP). It also has a useless option to download the image which you have just uploaded.
+
+Online preview
+https://image-uploader-b830e.web.app/
